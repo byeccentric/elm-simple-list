@@ -1,8 +1,6 @@
-module Data exposing (maximums, sellCats, spendList, spends)
+module Data exposing (Spend, getCategory, getCategoryMaximum, sellCats, spendList)
 
 import Array exposing (Array)
-import Html exposing (Html, br, div, h1, table, tbody, td, text, th, thead, tr)
-import Html.Attributes exposing (attribute, style)
 
 
 sellCats : Array String
@@ -293,6 +291,18 @@ spendList =
       , sum_plus = 250
       , name = "сброс на др"
       }
+    , { date = "15.06.2021"
+      , cat = 3
+      , sum = 166
+      , sum_plus = 200
+      , name = "такси"
+      }
+    , { date = "15.06.2021"
+      , cat = 3
+      , sum = 138
+      , sum_plus = 150
+      , name = "такси"
+      }
     ]
 
 
@@ -304,140 +314,3 @@ getCategory cat =
 getCategoryMaximum : Int -> Int
 getCategoryMaximum cat =
     Maybe.withDefault 0 <| Array.get cat maximums
-
-
-renderSpend : Spend -> Html msg
-renderSpend spend =
-    tr []
-        [ td [] [ text spend.date ]
-        , td [] [ text (getCategory spend.cat) ]
-        , td [] [ text (String.fromFloat spend.sum ++ " (" ++ String.fromFloat spend.sum_plus ++ ")") ]
-        , td [] [ text spend.name ]
-        ]
-
-
-renderSpends : List Spend -> Html msg
-renderSpends data =
-    let
-        list =
-            List.map renderSpend data
-    in
-    tbody [] list
-
-
-baseSum : Float
-baseSum =
-    List.map .sum spendList |> List.sum
-
-
-fullSum : Float
-fullSum =
-    List.map .sum_plus spendList |> List.sum
-
-
-sumByCategory : List Float
-sumByCategory =
-    List.repeat (Array.length sellCats) 0
-
-
-renderCategory : ( Int, Float ) -> ( Int, Int, Int )
-renderCategory data =
-    List.filter (\n -> n.cat == Tuple.first data) spendList
-        |> List.map .sum_plus
-        |> List.sum
-        |> round
-        |> (\n -> ( n, getCategoryMaximum (Tuple.first data), getCategoryMaximum (Tuple.first data) - n ))
-
-
-renderCategories : List Float -> Html msg
-renderCategories data =
-    let
-        values =
-            List.indexedMap Tuple.pair sumByCategory
-                |> List.map renderCategory
-
-        renderValues =
-            List.map
-                (\( n, r, j ) ->
-                    td
-                        [ attribute "style"
-                            (if j < 0 then
-                                "background: red"
-
-                             else
-                                ""
-                            )
-                        ]
-                        [ text (String.fromInt n ++ " из " ++ String.fromInt r) ]
-                )
-                values
-
-        renderLefts =
-            List.map
-                (\( _, _, j ) ->
-                    td
-                        [ attribute "style"
-                            (if j < 0 then
-                                "background: red"
-
-                             else
-                                ""
-                            )
-                        ]
-                        [ text (String.fromInt j) ]
-                )
-                values
-    in
-    tbody []
-        [ tr [] renderValues
-        , tr [] renderLefts
-        ]
-
-
-spends : Html msg
-spends =
-    div []
-        [ h1 [] [ text "На текущий месяц категории" ]
-        , table
-            [ attribute "border" "1"
-            , attribute "width" "100%"
-            ]
-            [ thead []
-                [ tr []
-                    [ th [] [ text "Матрас" ]
-                    , th [] [ text "Ремонт машины" ]
-                    , th [] [ text "Отложения" ]
-                    , th [] [ text "Проезд" ]
-                    , th [] [ text "Сигареты" ]
-                    , th [] [ text "Одежда" ]
-                    , th [] [ text "Квартира" ]
-                    , th [] [ text "Прочее" ]
-                    , th [] [ text "Вернут" ]
-                    ]
-                ]
-            , renderCategories sumByCategory
-            ]
-        , br [] []
-        , br [] []
-        , h1 [] [ text "Список трат за месяц" ]
-        , table
-            [ attribute "border" "1"
-            , attribute "width" "30%"
-            ]
-            [ thead []
-                [ tr []
-                    [ th [] [ text "Дата" ]
-                    , th [] [ text "Категория" ]
-                    , th [] [ text "Сумма (полная)" ]
-                    , th [] [ text "Комментарий" ]
-                    ]
-                ]
-            , renderSpends spendList
-            , tr []
-                [ td [] []
-                , th [] [ text "Всего: " ]
-                , th [] [ text (String.fromInt (round baseSum) ++ " (" ++ String.fromInt (round fullSum) ++ ")") ]
-                , td [] []
-                ]
-            ]
-        ]

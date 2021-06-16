@@ -1,8 +1,8 @@
 module Main exposing (main)
 
-import Data exposing (spends)
 import Html exposing (Html, br, div, h1, table, tbody, td, text, th, thead, tr)
 import Html.Attributes exposing (attribute)
+import Spend exposing (spends)
 
 
 main =

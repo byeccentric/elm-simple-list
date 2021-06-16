@@ -4687,25 +4687,28 @@ var $author$project$Data$spendList = _List_fromArray(
 		{cat: 3, date: '15.06.2021', name: 'такси', sum: 787, sum_plus: 800},
 		{cat: 7, date: '15.06.2021', name: 'возврат от еды', sum: -112.94, sum_plus: -112.94},
 		{cat: 8, date: '15.06.2021', name: 'возврат от Маши', sum: -10200, sum_plus: -10200},
-		{cat: 7, date: '15.06.2021', name: 'сброс на др', sum: 250, sum_plus: 250}
+		{cat: 7, date: '15.06.2021', name: 'сброс на др', sum: 250, sum_plus: 250},
+		{cat: 3, date: '15.06.2021', name: 'такси', sum: 166, sum_plus: 200},
+		{cat: 3, date: '15.06.2021', name: 'такси', sum: 138, sum_plus: 150}
 	]);
 var $elm$core$List$sum = function (numbers) {
 	return A3($elm$core$List$foldl, $elm$core$Basics$add, 0, numbers);
 };
-var $author$project$Data$baseSum = $elm$core$List$sum(
+var $author$project$Spend$baseSum = $elm$core$List$sum(
 	A2(
 		$elm$core$List$map,
 		function ($) {
 			return $.sum;
 		},
 		$author$project$Data$spendList));
-var $author$project$Data$fullSum = $elm$core$List$sum(
+var $author$project$Spend$fullSum = $elm$core$List$sum(
 	A2(
 		$elm$core$List$map,
 		function ($) {
 			return $.sum_plus;
 		},
 		$author$project$Data$spendList));
+var $elm$core$String$fromFloat = _String_fromNumber;
 var $elm$core$Tuple$pair = F2(
 	function (a, b) {
 		return _Utils_Tuple2(a, b);
@@ -4816,109 +4819,366 @@ var $author$project$Data$getCategoryMaximum = function (cat) {
 		0,
 		A2($elm$core$Array$get, cat, $author$project$Data$maximums));
 };
-var $elm$core$Basics$round = _Basics_round;
-var $author$project$Data$renderCategory = function (data) {
-	return function (n) {
-		return _Utils_Tuple3(
-			n,
-			$author$project$Data$getCategoryMaximum(data.a),
-			$author$project$Data$getCategoryMaximum(data.a) - n);
-	}(
-		$elm$core$Basics$round(
-			$elm$core$List$sum(
-				A2(
-					$elm$core$List$map,
-					function ($) {
-						return $.sum_plus;
-					},
-					A2(
-						$elm$core$List$filter,
-						function (n) {
-							return _Utils_eq(n.cat, data.a);
-						},
-						$author$project$Data$spendList)))));
+var $elm$core$Basics$not = _Basics_not;
+var $elm$core$Basics$abs = function (n) {
+	return (n < 0) ? (-n) : n;
 };
-var $elm$core$Array$length = function (_v0) {
-	var len = _v0.a;
-	return len;
-};
-var $elm$core$List$repeatHelp = F3(
-	function (result, n, value) {
-		repeatHelp:
+var $elm$core$List$any = F2(
+	function (isOkay, list) {
+		any:
 		while (true) {
-			if (n <= 0) {
-				return result;
+			if (!list.b) {
+				return false;
 			} else {
-				var $temp$result = A2($elm$core$List$cons, value, result),
-					$temp$n = n - 1,
-					$temp$value = value;
-				result = $temp$result;
-				n = $temp$n;
-				value = $temp$value;
-				continue repeatHelp;
+				var x = list.a;
+				var xs = list.b;
+				if (isOkay(x)) {
+					return true;
+				} else {
+					var $temp$isOkay = isOkay,
+						$temp$list = xs;
+					isOkay = $temp$isOkay;
+					list = $temp$list;
+					continue any;
+				}
 			}
 		}
 	});
-var $elm$core$List$repeat = F2(
-	function (n, value) {
-		return A3($elm$core$List$repeatHelp, _List_Nil, n, value);
+var $elm$core$Basics$neq = _Utils_notEqual;
+var $elm$core$String$foldr = _String_foldr;
+var $elm$core$String$toList = function (string) {
+	return A3($elm$core$String$foldr, $elm$core$List$cons, _List_Nil, string);
+};
+var $myrho$elm_round$Round$addSign = F2(
+	function (signed, str) {
+		var isNotZero = A2(
+			$elm$core$List$any,
+			function (c) {
+				return (!_Utils_eq(
+					c,
+					_Utils_chr('0'))) && (!_Utils_eq(
+					c,
+					_Utils_chr('.')));
+			},
+			$elm$core$String$toList(str));
+		return _Utils_ap(
+			(signed && isNotZero) ? '-' : '',
+			str);
 	});
-var $author$project$Data$sellCats = $elm$core$Array$fromList(
-	_List_fromArray(
-		['Матрас', 'Ремонт авто', 'Отложения', 'Проезд', 'Сиги', 'Одежда', 'Квартира', 'Прочее', 'Вернут']));
-var $author$project$Data$sumByCategory = A2(
-	$elm$core$List$repeat,
-	$elm$core$Array$length($author$project$Data$sellCats),
-	0);
+var $elm$core$String$cons = _String_cons;
+var $elm$core$Char$fromCode = _Char_fromCode;
+var $myrho$elm_round$Round$increaseNum = function (_v0) {
+	var head = _v0.a;
+	var tail = _v0.b;
+	if (_Utils_eq(
+		head,
+		_Utils_chr('9'))) {
+		var _v1 = $elm$core$String$uncons(tail);
+		if (_v1.$ === 'Nothing') {
+			return '01';
+		} else {
+			var headtail = _v1.a;
+			return A2(
+				$elm$core$String$cons,
+				_Utils_chr('0'),
+				$myrho$elm_round$Round$increaseNum(headtail));
+		}
+	} else {
+		var c = $elm$core$Char$toCode(head);
+		return ((c >= 48) && (c < 57)) ? A2(
+			$elm$core$String$cons,
+			$elm$core$Char$fromCode(c + 1),
+			tail) : '0';
+	}
+};
+var $elm$core$Basics$isInfinite = _Basics_isInfinite;
+var $elm$core$Basics$isNaN = _Basics_isNaN;
+var $elm$core$String$length = _String_length;
+var $elm$core$Maybe$map = F2(
+	function (f, maybe) {
+		if (maybe.$ === 'Just') {
+			var value = maybe.a;
+			return $elm$core$Maybe$Just(
+				f(value));
+		} else {
+			return $elm$core$Maybe$Nothing;
+		}
+	});
+var $elm$core$String$fromChar = function (_char) {
+	return A2($elm$core$String$cons, _char, '');
+};
+var $elm$core$Bitwise$shiftRightBy = _Bitwise_shiftRightBy;
+var $elm$core$String$repeatHelp = F3(
+	function (n, chunk, result) {
+		return (n <= 0) ? result : A3(
+			$elm$core$String$repeatHelp,
+			n >> 1,
+			_Utils_ap(chunk, chunk),
+			(!(n & 1)) ? result : _Utils_ap(result, chunk));
+	});
+var $elm$core$String$repeat = F2(
+	function (n, chunk) {
+		return A3($elm$core$String$repeatHelp, n, chunk, '');
+	});
+var $elm$core$String$padRight = F3(
+	function (n, _char, string) {
+		return _Utils_ap(
+			string,
+			A2(
+				$elm$core$String$repeat,
+				n - $elm$core$String$length(string),
+				$elm$core$String$fromChar(_char)));
+	});
+var $elm$core$String$reverse = _String_reverse;
+var $elm$core$String$slice = _String_slice;
+var $myrho$elm_round$Round$splitComma = function (str) {
+	var _v0 = A2($elm$core$String$split, '.', str);
+	if (_v0.b) {
+		if (_v0.b.b) {
+			var before = _v0.a;
+			var _v1 = _v0.b;
+			var after = _v1.a;
+			return _Utils_Tuple2(before, after);
+		} else {
+			var before = _v0.a;
+			return _Utils_Tuple2(before, '0');
+		}
+	} else {
+		return _Utils_Tuple2('0', '0');
+	}
+};
+var $elm$core$String$dropLeft = F2(
+	function (n, string) {
+		return (n < 1) ? string : A3(
+			$elm$core$String$slice,
+			n,
+			$elm$core$String$length(string),
+			string);
+	});
+var $elm$core$Tuple$mapFirst = F2(
+	function (func, _v0) {
+		var x = _v0.a;
+		var y = _v0.b;
+		return _Utils_Tuple2(
+			func(x),
+			y);
+	});
+var $elm$core$String$startsWith = _String_startsWith;
+var $elm$core$String$toInt = _String_toInt;
+var $myrho$elm_round$Round$toDecimal = function (fl) {
+	var _v0 = A2(
+		$elm$core$String$split,
+		'e',
+		$elm$core$String$fromFloat(
+			$elm$core$Basics$abs(fl)));
+	if (_v0.b) {
+		if (_v0.b.b) {
+			var num = _v0.a;
+			var _v1 = _v0.b;
+			var exp = _v1.a;
+			var e = A2(
+				$elm$core$Maybe$withDefault,
+				0,
+				$elm$core$String$toInt(
+					A2($elm$core$String$startsWith, '+', exp) ? A2($elm$core$String$dropLeft, 1, exp) : exp));
+			var _v2 = $myrho$elm_round$Round$splitComma(num);
+			var before = _v2.a;
+			var after = _v2.b;
+			var total = _Utils_ap(before, after);
+			var zeroed = (e < 0) ? A2(
+				$elm$core$Maybe$withDefault,
+				'0',
+				A2(
+					$elm$core$Maybe$map,
+					function (_v3) {
+						var a = _v3.a;
+						var b = _v3.b;
+						return a + ('.' + b);
+					},
+					A2(
+						$elm$core$Maybe$map,
+						$elm$core$Tuple$mapFirst($elm$core$String$fromChar),
+						$elm$core$String$uncons(
+							_Utils_ap(
+								A2(
+									$elm$core$String$repeat,
+									$elm$core$Basics$abs(e),
+									'0'),
+								total))))) : A3(
+				$elm$core$String$padRight,
+				e + 1,
+				_Utils_chr('0'),
+				total);
+			return _Utils_ap(
+				(fl < 0) ? '-' : '',
+				zeroed);
+		} else {
+			var num = _v0.a;
+			return _Utils_ap(
+				(fl < 0) ? '-' : '',
+				num);
+		}
+	} else {
+		return '';
+	}
+};
+var $myrho$elm_round$Round$roundFun = F3(
+	function (functor, s, fl) {
+		if ($elm$core$Basics$isInfinite(fl) || $elm$core$Basics$isNaN(fl)) {
+			return $elm$core$String$fromFloat(fl);
+		} else {
+			var signed = fl < 0;
+			var _v0 = $myrho$elm_round$Round$splitComma(
+				$myrho$elm_round$Round$toDecimal(
+					$elm$core$Basics$abs(fl)));
+			var before = _v0.a;
+			var after = _v0.b;
+			var r = $elm$core$String$length(before) + s;
+			var normalized = _Utils_ap(
+				A2($elm$core$String$repeat, (-r) + 1, '0'),
+				A3(
+					$elm$core$String$padRight,
+					r,
+					_Utils_chr('0'),
+					_Utils_ap(before, after)));
+			var totalLen = $elm$core$String$length(normalized);
+			var roundDigitIndex = A2($elm$core$Basics$max, 1, r);
+			var increase = A2(
+				functor,
+				signed,
+				A3($elm$core$String$slice, roundDigitIndex, totalLen, normalized));
+			var remains = A3($elm$core$String$slice, 0, roundDigitIndex, normalized);
+			var num = increase ? $elm$core$String$reverse(
+				A2(
+					$elm$core$Maybe$withDefault,
+					'1',
+					A2(
+						$elm$core$Maybe$map,
+						$myrho$elm_round$Round$increaseNum,
+						$elm$core$String$uncons(
+							$elm$core$String$reverse(remains))))) : remains;
+			var numLen = $elm$core$String$length(num);
+			var numZeroed = (num === '0') ? num : ((s <= 0) ? _Utils_ap(
+				num,
+				A2(
+					$elm$core$String$repeat,
+					$elm$core$Basics$abs(s),
+					'0')) : ((_Utils_cmp(
+				s,
+				$elm$core$String$length(after)) < 0) ? (A3($elm$core$String$slice, 0, numLen - s, num) + ('.' + A3($elm$core$String$slice, numLen - s, numLen, num))) : _Utils_ap(
+				before + '.',
+				A3(
+					$elm$core$String$padRight,
+					s,
+					_Utils_chr('0'),
+					after))));
+			return A2($myrho$elm_round$Round$addSign, signed, numZeroed);
+		}
+	});
+var $myrho$elm_round$Round$round = $myrho$elm_round$Round$roundFun(
+	F2(
+		function (signed, str) {
+			var _v0 = $elm$core$String$uncons(str);
+			if (_v0.$ === 'Nothing') {
+				return false;
+			} else {
+				if ('5' === _v0.a.a.valueOf()) {
+					if (_v0.a.b === '') {
+						var _v1 = _v0.a;
+						return !signed;
+					} else {
+						var _v2 = _v0.a;
+						return true;
+					}
+				} else {
+					var _v3 = _v0.a;
+					var _int = _v3.a;
+					return function (i) {
+						return ((i > 53) && signed) || ((i >= 53) && (!signed));
+					}(
+						$elm$core$Char$toCode(_int));
+				}
+			}
+		}));
+var $elm$core$String$toFloat = _String_toFloat;
+var $author$project$Spend$renderCategory = function (data) {
+	return function (res) {
+		return _Utils_Tuple3(
+			res,
+			$author$project$Data$getCategoryMaximum(data.a),
+			$author$project$Data$getCategoryMaximum(data.a) - res);
+	}(
+		A2(
+			$elm$core$Maybe$withDefault,
+			0,
+			$elm$core$String$toFloat(
+				A2(
+					$myrho$elm_round$Round$round,
+					2,
+					$elm$core$List$sum(
+						A2(
+							$elm$core$List$map,
+							function ($) {
+								return $.sum_plus;
+							},
+							A2(
+								$elm$core$List$filter,
+								function (n) {
+									return _Utils_eq(n.cat, data.a);
+								},
+								$author$project$Data$spendList)))))));
+};
+var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
+var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
 var $elm$html$Html$tbody = _VirtualDom_node('tbody');
 var $elm$html$Html$td = _VirtualDom_node('td');
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
 var $elm$html$Html$tr = _VirtualDom_node('tr');
-var $author$project$Data$renderCategories = function (data) {
+var $author$project$Spend$renderCategories = function (data) {
 	var values = A2(
 		$elm$core$List$map,
-		$author$project$Data$renderCategory,
-		A2($elm$core$List$indexedMap, $elm$core$Tuple$pair, $author$project$Data$sumByCategory));
+		$author$project$Spend$renderCategory,
+		A2($elm$core$List$indexedMap, $elm$core$Tuple$pair, data));
 	var renderValues = A2(
 		$elm$core$List$map,
 		function (_v1) {
-			var n = _v1.a;
-			var r = _v1.b;
-			var j = _v1.c;
+			var spent = _v1.a;
+			var maximum = _v1.b;
+			var difference = _v1.c;
 			return A2(
 				$elm$html$Html$td,
 				_List_fromArray(
 					[
 						A2(
-						$elm$html$Html$Attributes$attribute,
-						'style',
-						(j < 0) ? 'background: red' : '')
+						$elm$html$Html$Attributes$style,
+						'background-color',
+						(difference < 0) ? 'red' : '')
 					]),
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						$elm$core$String$fromInt(n) + (' из ' + $elm$core$String$fromInt(r)))
+						$elm$core$String$fromFloat(spent) + (' из ' + $elm$core$String$fromInt(maximum)))
 					]));
 		},
 		values);
 	var renderLefts = A2(
 		$elm$core$List$map,
 		function (_v0) {
-			var j = _v0.c;
+			var difference = _v0.c;
 			return A2(
 				$elm$html$Html$td,
 				_List_fromArray(
 					[
 						A2(
-						$elm$html$Html$Attributes$attribute,
-						'style',
-						(j < 0) ? 'background: red' : '')
+						$elm$html$Html$Attributes$style,
+						'background-color',
+						(difference < 0) ? 'red' : '')
 					]),
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						$elm$core$String$fromInt(j))
+						$elm$core$String$fromFloat(difference))
 					]));
 		},
 		values);
@@ -4931,14 +5191,16 @@ var $author$project$Data$renderCategories = function (data) {
 				A2($elm$html$Html$tr, _List_Nil, renderLefts)
 			]));
 };
-var $elm$core$String$fromFloat = _String_fromNumber;
+var $author$project$Data$sellCats = $elm$core$Array$fromList(
+	_List_fromArray(
+		['Матрас', 'Ремонт авто', 'Отложения', 'Проезд', 'Сиги', 'Одежда', 'Квартира', 'Прочее', 'Вернут']));
 var $author$project$Data$getCategory = function (cat) {
 	return A2(
 		$elm$core$Maybe$withDefault,
 		'UNKNOWN',
 		A2($elm$core$Array$get, cat, $author$project$Data$sellCats));
 };
-var $author$project$Data$renderSpend = function (spend) {
+var $author$project$Spend$renderSpend = function (spend) {
 	return A2(
 		$elm$html$Html$tr,
 		_List_Nil,
@@ -4976,14 +5238,43 @@ var $author$project$Data$renderSpend = function (spend) {
 					]))
 			]));
 };
-var $author$project$Data$renderSpends = function (data) {
-	var list = A2($elm$core$List$map, $author$project$Data$renderSpend, data);
+var $author$project$Spend$renderSpends = function (data) {
+	var list = A2($elm$core$List$map, $author$project$Spend$renderSpend, data);
 	return A2($elm$html$Html$tbody, _List_Nil, list);
 };
+var $elm$core$Array$length = function (_v0) {
+	var len = _v0.a;
+	return len;
+};
+var $elm$core$List$repeatHelp = F3(
+	function (result, n, value) {
+		repeatHelp:
+		while (true) {
+			if (n <= 0) {
+				return result;
+			} else {
+				var $temp$result = A2($elm$core$List$cons, value, result),
+					$temp$n = n - 1,
+					$temp$value = value;
+				result = $temp$result;
+				n = $temp$n;
+				value = $temp$value;
+				continue repeatHelp;
+			}
+		}
+	});
+var $elm$core$List$repeat = F2(
+	function (n, value) {
+		return A3($elm$core$List$repeatHelp, _List_Nil, n, value);
+	});
+var $author$project$Spend$sumByCategory = A2(
+	$elm$core$List$repeat,
+	$elm$core$Array$length($author$project$Data$sellCats),
+	0);
 var $elm$html$Html$table = _VirtualDom_node('table');
 var $elm$html$Html$th = _VirtualDom_node('th');
 var $elm$html$Html$thead = _VirtualDom_node('thead');
-var $author$project$Data$spends = A2(
+var $author$project$Spend$spends = A2(
 	$elm$html$Html$div,
 	_List_Nil,
 	_List_fromArray(
@@ -5079,7 +5370,7 @@ var $author$project$Data$spends = A2(
 										]))
 								]))
 						])),
-					$author$project$Data$renderCategories($author$project$Data$sumByCategory)
+					$author$project$Spend$renderCategories($author$project$Spend$sumByCategory)
 				])),
 			A2($elm$html$Html$br, _List_Nil, _List_Nil),
 			A2($elm$html$Html$br, _List_Nil, _List_Nil),
@@ -5139,7 +5430,7 @@ var $author$project$Data$spends = A2(
 										]))
 								]))
 						])),
-					$author$project$Data$renderSpends($author$project$Data$spendList),
+					$author$project$Spend$renderSpends($author$project$Data$spendList),
 					A2(
 					$elm$html$Html$tr,
 					_List_Nil,
@@ -5159,11 +5450,16 @@ var $author$project$Data$spends = A2(
 							_List_fromArray(
 								[
 									$elm$html$Html$text(
-									$elm$core$String$fromInt(
-										$elm$core$Basics$round($author$project$Data$baseSum)) + (' (' + ($elm$core$String$fromInt(
-										$elm$core$Basics$round($author$project$Data$fullSum)) + ')')))
+									A2($myrho$elm_round$Round$round, 2, $author$project$Spend$baseSum) + (' (' + (A2($myrho$elm_round$Round$round, 2, $author$project$Spend$fullSum) + ')')))
 								])),
-							A2($elm$html$Html$td, _List_Nil, _List_Nil)
+							A2(
+							$elm$html$Html$th,
+							_List_Nil,
+							_List_fromArray(
+								[
+									$elm$html$Html$text(
+									'В копилку: ' + A2($myrho$elm_round$Round$round, 2, $author$project$Spend$fullSum - $author$project$Spend$baseSum))
+								]))
 						]))
 				]))
 		]));
@@ -5327,7 +5623,7 @@ var $author$project$Main$main = A2(
 				])),
 			A2($elm$html$Html$br, _List_Nil, _List_Nil),
 			A2($elm$html$Html$br, _List_Nil, _List_Nil),
-			$author$project$Data$spends
+			$author$project$Spend$spends
 		]));
 _Platform_export({'Main':{'init':_VirtualDom_init($author$project$Main$main)(0)(0)}});
 
@@ -5898,7 +6194,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52007" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58682" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
