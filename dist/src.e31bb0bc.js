@@ -4689,7 +4689,8 @@ var $author$project$Data$spendList = _List_fromArray(
 		{cat: 8, date: '15.06.2021', name: 'возврат от Маши', sum: -10200, sum_plus: -10200},
 		{cat: 7, date: '15.06.2021', name: 'сброс на др', sum: 250, sum_plus: 250},
 		{cat: 3, date: '15.06.2021', name: 'такси', sum: 166, sum_plus: 200},
-		{cat: 3, date: '15.06.2021', name: 'такси', sum: 138, sum_plus: 150}
+		{cat: 3, date: '16.06.2021', name: 'такси', sum: 138, sum_plus: 150},
+		{cat: 7, date: '16.06.2021', name: 'сброс на др', sum: 185, sum_plus: 185}
 	]);
 var $elm$core$List$sum = function (numbers) {
 	return A3($elm$core$List$foldl, $elm$core$Basics$add, 0, numbers);
@@ -5191,9 +5192,33 @@ var $author$project$Spend$renderCategories = function (data) {
 				A2($elm$html$Html$tr, _List_Nil, renderLefts)
 			]));
 };
+var $elm$html$Html$th = _VirtualDom_node('th');
+var $author$project$Spend$renderCategoryName = function (item) {
+	return A2(
+		$elm$html$Html$th,
+		_List_Nil,
+		_List_fromArray(
+			[
+				$elm$html$Html$text(item)
+			]));
+};
+var $elm$html$Html$thead = _VirtualDom_node('thead');
+var $author$project$Spend$renderCategoryNames = function (list) {
+	var html = A2(
+		$elm$core$List$map,
+		$author$project$Spend$renderCategoryName,
+		$elm$core$Array$toList(list));
+	return A2(
+		$elm$html$Html$thead,
+		_List_Nil,
+		_List_fromArray(
+			[
+				A2($elm$html$Html$tr, _List_Nil, html)
+			]));
+};
 var $author$project$Data$sellCats = $elm$core$Array$fromList(
 	_List_fromArray(
-		['Матрас', 'Ремонт авто', 'Отложения', 'Проезд', 'Сиги', 'Одежда', 'Квартира', 'Прочее', 'Вернут']));
+		['Матрас', 'Ремонт авто', 'Отложения', 'Проезд', 'Пагубные привычки', 'Одежда', 'Квартира', 'Прочее', 'Вернут']));
 var $author$project$Data$getCategory = function (cat) {
 	return A2(
 		$elm$core$Maybe$withDefault,
@@ -5272,8 +5297,6 @@ var $author$project$Spend$sumByCategory = A2(
 	$elm$core$Array$length($author$project$Data$sellCats),
 	0);
 var $elm$html$Html$table = _VirtualDom_node('table');
-var $elm$html$Html$th = _VirtualDom_node('th');
-var $elm$html$Html$thead = _VirtualDom_node('thead');
 var $author$project$Spend$spends = A2(
 	$elm$html$Html$div,
 	_List_Nil,
@@ -5295,81 +5318,7 @@ var $author$project$Spend$spends = A2(
 				]),
 			_List_fromArray(
 				[
-					A2(
-					$elm$html$Html$thead,
-					_List_Nil,
-					_List_fromArray(
-						[
-							A2(
-							$elm$html$Html$tr,
-							_List_Nil,
-							_List_fromArray(
-								[
-									A2(
-									$elm$html$Html$th,
-									_List_Nil,
-									_List_fromArray(
-										[
-											$elm$html$Html$text('Матрас')
-										])),
-									A2(
-									$elm$html$Html$th,
-									_List_Nil,
-									_List_fromArray(
-										[
-											$elm$html$Html$text('Ремонт машины')
-										])),
-									A2(
-									$elm$html$Html$th,
-									_List_Nil,
-									_List_fromArray(
-										[
-											$elm$html$Html$text('Отложения')
-										])),
-									A2(
-									$elm$html$Html$th,
-									_List_Nil,
-									_List_fromArray(
-										[
-											$elm$html$Html$text('Проезд')
-										])),
-									A2(
-									$elm$html$Html$th,
-									_List_Nil,
-									_List_fromArray(
-										[
-											$elm$html$Html$text('Сигареты')
-										])),
-									A2(
-									$elm$html$Html$th,
-									_List_Nil,
-									_List_fromArray(
-										[
-											$elm$html$Html$text('Одежда')
-										])),
-									A2(
-									$elm$html$Html$th,
-									_List_Nil,
-									_List_fromArray(
-										[
-											$elm$html$Html$text('Квартира')
-										])),
-									A2(
-									$elm$html$Html$th,
-									_List_Nil,
-									_List_fromArray(
-										[
-											$elm$html$Html$text('Прочее')
-										])),
-									A2(
-									$elm$html$Html$th,
-									_List_Nil,
-									_List_fromArray(
-										[
-											$elm$html$Html$text('Вернут')
-										]))
-								]))
-						])),
+					$author$project$Spend$renderCategoryNames($author$project$Data$sellCats),
 					$author$project$Spend$renderCategories($author$project$Spend$sumByCategory)
 				])),
 			A2($elm$html$Html$br, _List_Nil, _List_Nil),
@@ -6194,7 +6143,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58682" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53417" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

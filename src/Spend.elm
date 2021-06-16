@@ -41,6 +41,22 @@ sumByCategory =
     List.repeat (Array.length sellCats) 0
 
 
+renderCategoryName : String -> Html msg
+renderCategoryName item =
+    th [] [ text item ]
+
+
+renderCategoryNames : Array String -> Html msg
+renderCategoryNames list =
+    let
+        html =
+            List.map renderCategoryName (Array.toList list)
+    in
+    thead []
+        [ tr [] html
+        ]
+
+
 renderCategory : ( Int, Float ) -> ( Float, Int, Float )
 renderCategory data =
     List.filter (\n -> n.cat == Tuple.first data) spendList
@@ -105,19 +121,7 @@ spends =
             [ attribute "border" "1"
             , attribute "width" "100%"
             ]
-            [ thead []
-                [ tr []
-                    [ th [] [ text "Матрас" ]
-                    , th [] [ text "Ремонт машины" ]
-                    , th [] [ text "Отложения" ]
-                    , th [] [ text "Проезд" ]
-                    , th [] [ text "Сигареты" ]
-                    , th [] [ text "Одежда" ]
-                    , th [] [ text "Квартира" ]
-                    , th [] [ text "Прочее" ]
-                    , th [] [ text "Вернут" ]
-                    ]
-                ]
+            [ renderCategoryNames sellCats
             , renderCategories sumByCategory
             ]
         , br [] []
