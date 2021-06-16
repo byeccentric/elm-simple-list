@@ -303,6 +303,12 @@ spendList =
       , sum_plus = 150
       , name = "такси"
       }
+    , { date = "16.06.2021"
+      , cat = 7
+      , sum = 185
+      , sum_plus = 185
+      , name = "сброс на др"
+      }
     ]
 
 
