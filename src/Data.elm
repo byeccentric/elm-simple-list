@@ -309,6 +309,24 @@ spendList =
       , sum_plus = 185
       , name = "сброс на др"
       }
+    , { date = "17.06.2021"
+      , cat = 3
+      , sum = 139
+      , sum_plus = 150
+      , name = "такси"
+      }
+    , { date = "17.06.2021"
+      , cat = 4
+      , sum = 122
+      , sum_plus = 150
+      , name = "сигареты"
+      }
+    , { date = "17.06.2021"
+      , cat = 7
+      , sum = 185
+      , sum_plus = 185
+      , name = "сброс на др"
+      }
     ]
 
 

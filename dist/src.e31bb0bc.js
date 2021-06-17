@@ -4690,7 +4690,9 @@ var $author$project$Data$spendList = _List_fromArray(
 		{cat: 7, date: '15.06.2021', name: 'сброс на др', sum: 250, sum_plus: 250},
 		{cat: 3, date: '15.06.2021', name: 'такси', sum: 166, sum_plus: 200},
 		{cat: 3, date: '16.06.2021', name: 'такси', sum: 138, sum_plus: 150},
-		{cat: 7, date: '16.06.2021', name: 'сброс на др', sum: 185, sum_plus: 185}
+		{cat: 7, date: '16.06.2021', name: 'сброс на др', sum: 185, sum_plus: 185},
+		{cat: 3, date: '17.06.2021', name: 'такси', sum: 139, sum_plus: 150},
+		{cat: 4, date: '17.06.2021', name: 'сигареты', sum: 122, sum_plus: 150}
 	]);
 var $elm$core$List$sum = function (numbers) {
 	return A3($elm$core$List$foldl, $elm$core$Basics$add, 0, numbers);
@@ -5179,7 +5181,7 @@ var $author$project$Spend$renderCategories = function (data) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						$elm$core$String$fromFloat(difference))
+						A2($myrho$elm_round$Round$round, 2, difference))
 					]));
 		},
 		values);
@@ -6143,7 +6145,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53417" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55207" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

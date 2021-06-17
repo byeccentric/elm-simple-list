@@ -103,7 +103,7 @@ renderCategories data =
                                 ""
                             )
                         ]
-                        [ text (String.fromFloat difference) ]
+                        [ text (R.round 2 difference) ]
                 )
                 values
     in
