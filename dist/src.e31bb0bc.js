@@ -4692,7 +4692,15 @@ var $author$project$Data$spendList = _List_fromArray(
 		{cat: 3, date: '16.06.2021', name: 'такси', sum: 138, sum_plus: 150},
 		{cat: 7, date: '16.06.2021', name: 'сброс на др', sum: 185, sum_plus: 185},
 		{cat: 3, date: '17.06.2021', name: 'такси', sum: 139, sum_plus: 150},
-		{cat: 4, date: '17.06.2021', name: 'сигареты', sum: 122, sum_plus: 150}
+		{cat: 4, date: '17.06.2021', name: 'сигареты', sum: 122, sum_plus: 150},
+		{cat: 7, date: '17.06.2021', name: 'сброс на др', sum: 185, sum_plus: 185},
+		{cat: 8, date: '17.06.2021', name: 'Маша в аптеке', sum: 523, sum_plus: 550},
+		{cat: 8, date: '17.06.2021', name: 'Маша в fixprice', sum: 494.2, sum_plus: 500},
+		{cat: 8, date: '17.06.2021', name: 'Маша в пятерочке', sum: 131.97, sum_plus: 150},
+		{cat: 8, date: '17.06.2021', name: 'Маша в метро', sum: 200, sum_plus: 200},
+		{cat: 8, date: '17.06.2021', name: 'Маша вернула', sum: -1500, sum_plus: -1500},
+		{cat: 3, date: '18.06.2021', name: 'такси', sum: 129, sum_plus: 150},
+		{cat: 6, date: '18.06.2021', name: 'на телефон', sum: 220, sum_plus: 220}
 	]);
 var $elm$core$List$sum = function (numbers) {
 	return A3($elm$core$List$foldl, $elm$core$Basics$add, 0, numbers);
@@ -6145,7 +6153,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55207" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52045" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

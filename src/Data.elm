@@ -327,6 +327,48 @@ spendList =
       , sum_plus = 185
       , name = "сброс на др"
       }
+    , { date = "17.06.2021"
+      , cat = 8
+      , sum = 523
+      , sum_plus = 550
+      , name = "Маша в аптеке"
+      }
+    , { date = "17.06.2021"
+      , cat = 8
+      , sum = 494.2
+      , sum_plus = 500
+      , name = "Маша в fixprice"
+      }
+    , { date = "17.06.2021"
+      , cat = 8
+      , sum = 131.97
+      , sum_plus = 150
+      , name = "Маша в пятерочке"
+      }
+    , { date = "17.06.2021"
+      , cat = 8
+      , sum = 200
+      , sum_plus = 200
+      , name = "Маша в метро"
+      }
+    , { date = "17.06.2021"
+      , cat = 8
+      , sum = -1500
+      , sum_plus = -1500
+      , name = "Маша вернула"
+      }
+    , { date = "18.06.2021"
+      , cat = 3
+      , sum = 129
+      , sum_plus = 150
+      , name = "такси"
+      }
+    , { date = "18.06.2021"
+      , cat = 6
+      , sum = 220
+      , sum_plus = 220
+      , name = "на телефон"
+      }
     ]
 
 
